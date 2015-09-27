@@ -1,8 +1,10 @@
 package main
 
 import (
-	. "github.com/smartystreets/goconvey/convey"
+	"fmt"
 	"testing"
+
+	. "github.com/smartystreets/goconvey/convey"
 )
 
 type test struct {
@@ -18,24 +20,36 @@ var testCases = []*test{
 		[]int{2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50}},
 }
 
-func TestBubble(t *testing.T) {
+func testBubble(t *testing.T) {
 	Convey("Input should equal output", t, func() {
 		for _, v := range testCases {
-			So(bubble(v.input), ShouldResemble, v.output)
+			input := v.input
+			So(bubble(input), ShouldResemble, v.output)
 		}
 	})
 }
 func TestSelect(t *testing.T) {
 	Convey("Input should equal output", t, func() {
 		for _, v := range testCases {
-			So(selectSort(v.input), ShouldResemble, v.output)
+			input := v.input
+			So(selectSort(input), ShouldResemble, v.output)
 		}
 	})
 }
 func TestMerge(t *testing.T) {
 	Convey("Input should equal output", t, func() {
 		for _, v := range testCases {
-			So(mergeSort(v.input), ShouldResemble, v.output)
+			input := v.input
+			So(mergeSort(input), ShouldResemble, v.output)
+		}
+	})
+}
+func TestQuick(t *testing.T) {
+	Convey("Input should equal output", t, func() {
+		for _, v := range testCases {
+			input := v.input
+			fmt.Println(input)
+			So(quick(input), ShouldResemble, v.output)
 		}
 	})
 }

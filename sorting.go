@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 func bubble(array []int) []int {
 	if len(array) == 0 || len(array) == 1 {
 		return array
@@ -83,4 +85,44 @@ func merge(a ...[]int) []int {
 		}
 	}
 	return merged
+}
+
+func quick(a []int) []int {
+	if len(a) == 0 || len(a) == 1 {
+		return a
+	}
+	start, end := 0, len(a)-1
+	if start == end-1 {
+		if a[start] > a[end] {
+			swap(a, start, end)
+			return a
+		}
+	}
+	start, pivot, end := sort(a, start, end)
+	quick(a[start : pivot+1])
+	quick(a[pivot+1 : end+1])
+	return a
+}
+
+func sort(a []int, pivot, end int) (int, int, int) {
+	count := pivot + 1
+	for j := count; j <= end; j++ {
+		if a[j] < a[pivot] {
+			swap(a, count, j)
+			count++
+		}
+	}
+	start := pivot
+	pivot = count - 1
+	swap(a, start, pivot)
+	return start, pivot, end
+}
+
+func swap(a []int, i, j int) {
+	if i == j {
+		return
+	}
+	tmp := a[i]
+	a[i] = a[j]
+	a[j] = tmp
 }
