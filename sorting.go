@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 func bubble(array []int) []int {
 	if len(array) == 0 || len(array) == 1 {
 		return array
