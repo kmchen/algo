@@ -124,3 +124,40 @@ func swap(a []int, i, j int) {
 	a[i] = a[j]
 	a[j] = tmp
 }
+
+//Find ‘k’ smallest numbers from a million numbers
+// Solution 1 : Sort in O(nlogn)
+// Solution 2 : Heapify to max or min heap
+// Solution 3 : Use quick sort to find partition takes O(n)
+func findKsmallestNum(slice []int, k int) []int {
+	if len(slice) == 0 {
+		return nil
+	}
+	kth := k - 1
+	pivot := 0
+	start, end := 1, len(slice)-1
+	// comparison
+	for {
+		// Scan from right to left
+		for slice[end] > slice[pivot] {
+			end--
+		}
+		// Scan from left to right
+		for start <= len(slice)-1 && slice[start] <= slice[pivot] {
+			start++
+		}
+		if start >= end {
+			break
+		}
+		slice[start], slice[end] = slice[end], slice[start]
+	}
+	// partition
+	slice[end], slice[pivot] = slice[pivot], slice[end]
+	if end < kth {
+		start = end + 1
+		return findKsmallestNum(slice[start:], k-len(slice[:start]))
+	} else if end > kth {
+		return findKsmallestNum(slice[:end+1], k)
+	}
+	return []int{slice[end]}
+}
