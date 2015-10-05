@@ -1,5 +1,7 @@
 package main
 
+import "math"
+
 func bubble(array []int) []int {
 	if len(array) == 0 || len(array) == 1 {
 		return array
@@ -125,7 +127,7 @@ func swap(a []int, i, j int) {
 	a[j] = tmp
 }
 
-//Find ‘k’ smallest numbers from a million numbers
+// Find ‘k’ smallest numbers from a million numbers
 // Solution 1 : Sort in O(nlogn)
 // Solution 2 : Heapify to max or min heap
 // Solution 3 : Use quick sort to find partition takes O(n)
@@ -160,4 +162,97 @@ func findKsmallestNum(slice []int, k int) []int {
 		return findKsmallestNum(slice[:end+1], k)
 	}
 	return []int{slice[end]}
+}
+
+type Tree interface {
+	Insert(int, *Node)
+	Remove(*Node)
+}
+type TreeImpl struct {
+	root    *Node
+	current *Node
+	count   int
+	depth   int
+}
+type Node struct {
+	left, right *Node
+	value       int
+}
+
+func (t *TreeImpl) Insert(idx int, n *Node) {
+	if t.count == 0 && idx == 0 {
+		t.count++
+		t.root = n
+		return
+	}
+	// Add depth when total num of nodes equals 2^(d+1) - 1
+	if t.count == pow(2, t.depth+1)-1 {
+		t.depth++
+	}
+	t.count++
+
+	// Construct path to node
+	path := make([]int, 0)
+	var parent = t.root
+	var current = t.root
+	constructPath(idx, path)
+
+	for k := len(path) - 1; k > 0; k-- {
+		parent = current
+		if k == 1 {
+			break
+		}
+		if k%2 == 0 {
+			current = parent.left
+		} else {
+			current = parent.right
+		}
+	}
+
+	// Insert to left or right
+	if path[0]%2 == 0 {
+		parent.left = n
+	} else {
+		parent.right = n
+	}
+	return
+}
+
+func constructPath(idx int, slice []int) {
+	if idx <= 0 {
+		return
+	}
+	var parent int
+	if idx%2 == 0 {
+		slice = append(slice, 0)
+		parent = idx / 2
+	} else {
+		slice = append(slice, 1)
+		parent = (idx - 1) / 2
+	}
+	constructPath(parent, slice)
+	return
+}
+
+func pow(b int, p int) int {
+	return int(math.Pow(float64(b), float64(p))) - 1
+}
+
+func (t *TreeImpl) Remove(n *Node) {
+	return
+}
+
+// Fact : a complete binary tree of depth d equals 2^(d+1) – 1 nodes
+// Since all leaves in such a tree are at level d,
+// the tree contains 2^d leaves and, therefore, 2^d - 1 internal nodes
+func binaryHeap(slice []int) Tree {
+	if len(slice) <= 0 {
+		return nil
+	}
+	heap := new(TreeImpl)
+	for k, v := range slice {
+		n := &Node{nil, nil, v}
+		heap.Insert(k, n)
+	}
+	return heap
 }

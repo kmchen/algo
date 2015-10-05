@@ -75,14 +75,7 @@ func TestKsmallestNum(t *testing.T) {
 		&test{[]int{1, 3, 41, 24, 76, 11, 45, 3, 3, 64, 21, 69, 19, 36},
 			[]int{21}},
 	}
-	ks := []int{
-		1,
-		2,
-		3,
-		4,
-		5,
-		6,
-		7}
+	ks := []int{1, 2, 3, 4, 5, 6, 7}
 	Convey("Input should equal output", t, func() {
 		for k, v := range testCases {
 			input := v.input
