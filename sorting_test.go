@@ -60,7 +60,6 @@ func TestQuick(t *testing.T) {
 	})
 }
 func TestKsmallestNum(t *testing.T) {
-
 	var testCases = []*test{
 		&test{[]int{0}, []int{0}},
 		&test{[]int{1, 0}, []int{1}},
@@ -80,6 +79,23 @@ func TestKsmallestNum(t *testing.T) {
 		for k, v := range testCases {
 			input := v.input
 			So(findKsmallestNum(input, ks[k]), ShouldResemble, v.output)
+		}
+	})
+}
+func TestFindPairsWithDiffK(t *testing.T) {
+	var testCases = []*test{
+		&test{[]int{3, 10, 20, 13, 7, 6, 7, 14, 16, 2, 4, 5, 11, 12},
+			[]int{7}},
+		&test{[]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+			[]int{8}},
+		&test{[]int{-10, -9, -8, -7, 0, 6, 5, 4, 3, 2, 1},
+			[]int{9}},
+	}
+	ks := []int{3, 2, 1}
+	Convey("Input should equal output", t, func() {
+		for k, v := range testCases {
+			input := v.input
+			So(findPairsWithDiffK(input, ks[k]), ShouldResemble, v.output[0])
 		}
 	})
 }

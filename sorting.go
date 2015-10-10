@@ -164,6 +164,48 @@ func findKsmallestNum(slice []int, k int) []int {
 	return []int{slice[end]}
 }
 
+// You have been given N numbers and a value K.
+// Find the number of pairs in this given list of numbers whose difference is exactly equal to K.
+// Solution 1: Brute force. Loop through array and find the element with distance K
+// Solution 2: Sort the array. Use binary search to find the pair
+// Solution 3: Sort the array. Start from the last element a[N], find the value J at index I.
+// 			   For element a[N-1], find the value X in the range a[0:J-1]
+func findPairsWithDiffK(slice []int, dist int) int {
+	if len(slice) <= 1 {
+		return 0
+	}
+	var count int
+	sorted := quick(slice)
+	size := len(sorted) - 1
+	index := -1
+	for i := size; i > 0; i-- {
+		ele := sorted[i]
+		var inner []int
+		if index == -1 {
+			index = len(sorted)
+		}
+		inner = sorted[:index]
+		innerLen := len(inner) - 1
+		for j := innerLen; j >= 0; j-- {
+			if j != innerLen && inner[j] == inner[j+1] {
+				continue
+			}
+			if abs(inner[j]) < abs(ele)-dist {
+				break
+			}
+			if abs(abs(inner[j])-abs(ele)) == dist {
+				index = j
+				count++
+			}
+		}
+	}
+	return count
+}
+
+func abs(num int) int {
+	return int(math.Abs(float64(num)))
+}
+
 type Tree interface {
 	Insert(int, *Node)
 	Remove(*Node)
