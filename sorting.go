@@ -1,6 +1,9 @@
 package main
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 func bubble(array []int) []int {
 	if len(array) == 0 || len(array) == 1 {
@@ -297,4 +300,79 @@ func binaryHeap(slice []int) Tree {
 		heap.Insert(k, n)
 	}
 	return heap
+}
+
+// Check if Array is consecutive Integers
+// 21,24,22,26,23,25 -> True
+// Solution 1 : Soriting n O(nlogn)
+// Solution 2 : Store in another array and all values can't be > 2
+// 				Time complexity : O(n), Space complexity : O(n)
+// Solution 3 : Find the min. For each value in the array, substract by min
+// 				array[array[i]] = -1, if array[array[i]] is already negative
+// 				then the array is not consecutive
+func consecutiveInt(slice []int) bool {
+	var min, max = 0, 0
+
+	// Find min O(n)
+	for k, v := range slice {
+		if k == 0 {
+			min = v
+			max = v
+			continue
+		}
+		if v < min {
+			min = v
+		}
+		if v > max {
+			max = v
+		}
+	}
+
+	// TODO : Check if max - min +1 == array length
+	if max-min+1 != len(slice) {
+		return false
+	}
+
+	// Substract by min O(n)
+	for k, v := range slice {
+		slice[k] = v - min
+	}
+	// Mark array[i] to -1, and detect duplicates
+	for k := range slice {
+		if slice[slice[k]] == -1 {
+			return false
+		}
+		slice[slice[k]] = -1
+	}
+	return true
+}
+
+// Maximum Sum of All Sub-arrays
+// For example, in the array {1, -2, 3, 10, -4, 7, 2, -5},
+// its sub-array {3, 10, -4, 7, 2} has the maximum sum 18.
+// Solution 1:  Enumerating all of sub-arrays and calculate their sum
+// An array with n elements has n(n+1)/2 sub-arrays. It costs O(n2) time at least to calculate their sum.
+// Solution 2: Analyse array number by number. Sum is equal to the accumulated sum, if current sum < accumulated sum
+func maxSumSubArrays(slice []int) int {
+	maxSum, sum := 0, 0
+	for k, v := range slice {
+		fmt.Println(k, v, maxSum, sum)
+		if k == 0 {
+			maxSum, sum = v, v
+			continue
+		}
+		var tmp = sum + v
+		if tmp < sum {
+			sum += v
+			continue
+		}
+		sum += v
+		if maxSum < sum && sum < v {
+			maxSum = v
+			sum = v
+			continue
+		}
+		maxSum = sum
+	}
+	return maxSum
 }
