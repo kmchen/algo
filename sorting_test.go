@@ -130,3 +130,34 @@ func TestMaxSumSubArrays(t *testing.T) {
 		}
 	})
 }
+func TestReverseWordsInSentence(t *testing.T) {
+	var testCases = []struct {
+		input, output string
+	}{
+		{"i am a student", "student a am i"},
+		{"i", "i"},
+		{"i ", " i"},
+	}
+	Convey("Input should equal output", t, func() {
+		for _, v := range testCases {
+			input := v.input
+			So(reverseWordsInSentence(input), ShouldResemble, v.output)
+		}
+	})
+}
+func TestFirstCharOnlyOnce(t *testing.T) {
+	var testCases = []struct {
+		input, output string
+	}{
+		{"abaccdeff", "b"},
+		{"a", "a"},
+		{"abcdefgh", "a"},
+		{"abcdefgabcdefgh", "h"},
+	}
+	Convey("Input should equal output", t, func() {
+		for _, v := range testCases {
+			input := v.input
+			So(firstCharOnlyOnce(input), ShouldResemble, v.output)
+		}
+	})
+}

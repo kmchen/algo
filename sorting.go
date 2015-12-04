@@ -1,3 +1,4 @@
+// Problems from http://codercareer.blogspot.tw/2011/10/no-13-first-character-appearing-only.html
 package main
 
 import (
@@ -375,4 +376,51 @@ func maxSumSubArrays(slice []int) int {
 		maxSum = sum
 	}
 	return maxSum
+}
+
+// String : Reverse words in a sentence
+// Input	: i am a student
+// Outout : student a am i
+func reverseWordsInSentence(input string) string {
+	size := len(input) - 1
+	var revString, result, tmp string
+	for i := range input {
+		index := size - i
+		char := string(input[index])
+		if i == size {
+			result += char
+			break
+		}
+		if char != " " {
+			tmp += char
+			continue
+		}
+		// Got reversed string e.g. tneduts
+		for _, v := range tmp {
+			revString = string(v) + revString
+		}
+		result += revString + " "
+		tmp = ""
+		revString = ""
+	}
+	return result
+}
+
+// String : First character appears only once
+// Problem :Implement a function to find the first character in a string which only appears once.
+// Input : "abaccdeff"
+// Output : "b"
+func firstCharOnlyOnce(input string) string {
+	result := make(map[rune]int)
+	var char string
+	for _, v := range input {
+		result[v]++
+	}
+	for _, v := range input {
+		if result[v] == 1 {
+			char = string(v)
+			break
+		}
+	}
+	return char
 }
