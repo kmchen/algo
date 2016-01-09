@@ -4,6 +4,7 @@ package main
 import (
 	"fmt"
 	"math"
+	"strings"
 )
 
 func bubble(array []int) []int {
@@ -406,6 +407,30 @@ func reverseWordsInSentence(input string) string {
 	return result
 }
 
+// String : Reverse words in a sentence
+// Input	: "the sky is blue"
+// Outout : "blue is sky the"
+func reverseWordsInSentence2(input string) string {
+	result := ""
+	head := len(input) - 1
+	tail := len(input)
+	// Loop through the sentence
+	for idx := len(input) - 1; idx >= 0; idx-- {
+		// Record index when hits an empty space
+		if string(input[idx]) != " " {
+			head--
+			continue
+		}
+		// Append substring[head:tail] to the result
+		// Reset tail = head
+		result += input[head:tail]
+		tail = head
+		head--
+	}
+	result += " " + input[0:tail]
+	return strings.Trim(result, " ")
+}
+
 // String : First character appears only once
 // Problem :Implement a function to find the first character in a string which only appears once.
 // Input : "abaccdeff"
@@ -424,3 +449,6 @@ func firstCharOnlyOnce(input string) string {
 	}
 	return char
 }
+
+//Problem: Left rotation of a string is to move some leading characters to its tail. Please implement a function to rotate a string.
+//For example, if the input string is “abcdefg” and a number 2, the rotated result is “cdefgab”.

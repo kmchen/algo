@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
@@ -125,7 +124,6 @@ func TestMaxSumSubArrays(t *testing.T) {
 	Convey("Input should equal output", t, func() {
 		for _, v := range testCases {
 			input := v.input
-			fmt.Println("-------------------", maxSumSubArrays(input))
 			So(maxSumSubArrays(input), ShouldResemble, v.output[0])
 		}
 	})
@@ -136,12 +134,14 @@ func TestReverseWordsInSentence(t *testing.T) {
 	}{
 		{"i am a student", "student a am i"},
 		{"i", "i"},
-		{"i ", " i"},
+		{"i ", "i"},
+		{" i ", "i"},
+		{"the sky is blue ", "blue is sky the"},
 	}
 	Convey("Input should equal output", t, func() {
 		for _, v := range testCases {
 			input := v.input
-			So(reverseWordsInSentence(input), ShouldResemble, v.output)
+			So(reverseWordsInSentence2(input), ShouldResemble, v.output)
 		}
 	})
 }
