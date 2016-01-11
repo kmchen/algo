@@ -4,6 +4,8 @@ package main
 import (
 	"fmt"
 	"math"
+	s "sort"
+	"strconv"
 	"strings"
 )
 
@@ -450,5 +452,52 @@ func firstCharOnlyOnce(input string) string {
 	return char
 }
 
-//Problem: Left rotation of a string is to move some leading characters to its tail. Please implement a function to rotate a string.
-//For example, if the input string is “abcdefg” and a number 2, the rotated result is “cdefgab”.
+// String: Largest number
+// Given a list of non-integer numbers, arrange them such that they form the largest number
+// Since the number can be very large, please returns as a string
+// Input : [3, 30, 34, 5, 9]
+// Output: "9534330"
+// Solution: Sort the array as string and compare descendant from the queue
+func largestNumber(input []int) string {
+	res := []string{}
+	// Turn all ints into string
+	for _, v := range input {
+		res = append(res, strconv.Itoa(v))
+	}
+	// Sort string list
+	med := []string{}
+	var tmp = 0
+	for i := 1; i < len(res); i++ {
+		if res[tmp] > res[i] {
+			med = append(med, res[i])
+			continue
+		}
+		med = append(med, res[tmp])
+		tmp = i
+	}
+	med = append(med, res[tmp])
+
+	// Sort using customized sort
+	s.Sort(ByLength(med))
+
+	// Concat string from the back
+	var ans string
+	for i := len(med) - 1; i >= 0; i-- {
+		ans += med[i]
+	}
+	return ans
+}
+
+type ByLength []string
+
+func (s ByLength) Len() int {
+	return len(s)
+}
+func (s ByLength) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+func (s ByLength) Less(i, j int) bool {
+	var a = s[i] + s[j]
+	var b = s[j] + s[i]
+	return a < b
+}

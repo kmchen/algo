@@ -161,3 +161,19 @@ func TestFirstCharOnlyOnce(t *testing.T) {
 		}
 	})
 }
+func TestLargestNumer(t *testing.T) {
+	var testCases = []struct {
+		input  []int
+		output string
+	}{
+		{[]int{3, 30, 34, 5, 9}, "9534330"},
+		{[]int{9, 30, 5, 3, 32}, "9533230"},
+		{[]int{3, 30, 32, 5, 9}, "9533230"},
+	}
+	Convey("Input should equal output", t, func() {
+		for _, v := range testCases {
+			input := v.input
+			So(largestNumber(input), ShouldResemble, v.output)
+		}
+	})
+}
