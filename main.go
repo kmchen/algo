@@ -501,3 +501,91 @@ func (s ByLength) Less(i, j int) bool {
 	var b = s[j] + s[i]
 	return a < b
 }
+
+// Array: Merge Sorted Array
+// Given two sorted integer arrays A and B, merge B into A as one sorted array.
+// Assume that A has enough space (size that is greater or equal to m + n)
+// to hold additional elements from B. The number of elements initialized
+// in A and B are m and n respectively.
+// Input : [3, 5, 9, 30, 34], 5, [1, 2, 3, 4, 5], 5
+// Output: [1, 2, 3, 4, 5, 6, 9, 30, 34]
+// Solution: Insert from the end to the head
+//func MergeSortedArray(a []int, m int, b []int, n int) string {
+//var idxA, idxB = m - 1, n - 1
+//var idxLast = m + n - 1
+//var length int
+//if idxA > idxB {
+//length = idxA
+//} else {
+//length = idxB
+//}
+//for i := length; i <= 0; i-- {
+//if a[idxA] > b[idxB] {
+//a[indxLast] = a[idxA]
+//idxAx--
+//continue
+//}
+//a[indxLast] = b[idxB]
+//idxAx--
+//}
+//}
+
+// Median of two sorted arrays (Tough question)
+// There are 2 sorted arrays A and B of size n each. Write an algorithm to
+// find the median of the array obtained after merging the above 2 arrays
+// (i.e. array of length 2n). The complexity should be O(log(n))
+// Solution 1 (By comparing the medians of two arrays)
+// This method works by first getting medians of the two sorted arrays and then comparing them.
+// 1) Calculate the medians m1 and m2 of the input arrays ar1[] and ar2[] respectively.
+// 2) If m1 and m2 both are equal then we are done. return m1 (or m2)
+// 3) If m1 is greater than m2, then median is present in one of the below two subarrays.
+//	a)  From first element of ar1 to m1 (ar1[0...|_n/2_|])
+// 	b)  From m2 to last element of ar2  (ar2[|_n/2_|...n-1])
+// 4) If m2 is greater than m1, then median is present in one of the below two subarrays.
+//	a)  From m1 to last element of ar1  (ar1[|_n/2_|...n-1])
+// 	b)  From first element of ar2 to m2 (ar2[0...|_n/2_|])
+// 5) Repeat the above process until size of both the subarrays becomes 2.
+// 6) If size of the two arrays is 2 then use below formula to get the median.
+//	Median = (max(ar1[0], ar2[0]) + min(ar1[1], ar2[1]))/2
+
+func MedianOfTwoSortedArray(n int, lists ...[]int) int {
+	a := lists[0]
+	b := lists[1]
+	m1 := median(a, n)
+	m2 := median(b, n)
+	fmt.Println(m1, m2, a, b)
+	// Medians are equal, return either m1 or m2
+	if m1 == m2 {
+		return m1
+	}
+	if len(a) == 2 && len(b) == 2 {
+		return (max(a[0], b[0]) + min(a[1], b[1])) / 2
+	}
+	// Median must be in the range of a[0:n/2] and b[n/2:]
+	if m1 > m2 {
+		return MedianOfTwoSortedArray(n/2+1, a[:n/2+1], b[n/2:])
+	} else {
+		return MedianOfTwoSortedArray(n/2+1, a[n/2:], b[:n/2+1])
+	}
+}
+
+func median(a []int, n int) int {
+	if n%2 == 0 {
+		return (a[n/2] + a[n/2-1]) / 2
+	}
+	return a[n/2]
+}
+
+func max(num ...int) int {
+	if num[0] > num[1] {
+		return num[0]
+	}
+	return num[1]
+}
+
+func min(num ...int) int {
+	if num[0] < num[1] {
+		return num[0]
+	}
+	return num[1]
+}

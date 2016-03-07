@@ -177,3 +177,40 @@ func TestLargestNumer(t *testing.T) {
 		}
 	})
 }
+func TestMergeSortedArray(t *testing.T) {
+	//var testCases = []struct {
+	//input  []int
+	//output string
+	//}{
+	//{[]int{3, 30, 34, 5, 9}, "9534330"},
+	//{[]int{9, 30, 5, 3, 32}, "9533230"},
+	//{[]int{3, 30, 32, 5, 9}, "9533230"},
+	//}
+	//Convey("Input should equal output", t, func() {
+	//for _, v := range testCases {
+	//input := v.input
+	//So(MergeSortedArray(input), ShouldResemble, v.output)
+	//}
+	//})
+}
+func TestMedianOfTwoSortedArray(t *testing.T) {
+	var testCases = []struct {
+		input1 []int
+		input2 []int
+		output int
+	}{
+		{[]int{1, 12, 15, 26, 38},
+			[]int{2, 13, 17, 30, 45},
+			16},
+		{[]int{1, 2, 3, 6},
+			[]int{4, 6, 8, 10},
+			6},
+	}
+	Convey("Input should equal output", t, func() {
+		for _, v := range testCases {
+			input1 := v.input1
+			input2 := v.input2
+			So(MedianOfTwoSortedArray(len(input1), input1, input2), ShouldResemble, v.output)
+		}
+	})
+}
