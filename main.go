@@ -7,132 +7,9 @@ import (
 	s "sort"
 	"strconv"
 	"strings"
+
+	sort "./sort"
 )
-
-func bubble(array []int) []int {
-	if len(array) == 0 || len(array) == 1 {
-		return array
-	}
-	endIdx := len(array) - 1
-	for {
-		i := 0
-		if endIdx <= i {
-			break
-		}
-		for ; i < endIdx; i++ {
-			if array[i] >= array[i+1] {
-				tmp := array[i]
-				array[i] = array[i+1]
-				array[i+1] = tmp
-			}
-		}
-		endIdx = endIdx - 1
-	}
-	return array
-}
-
-func selectSort(array []int) []int {
-	if len(array) == 1 || len(array) == 0 {
-		return array
-	}
-	end := len(array) - 1
-	for j := 0; j < end; j++ {
-		min := array[j]
-		minIdx := j
-		for i := j; i < len(array); i++ {
-			if array[i] < min {
-				min = array[i]
-				minIdx = i
-			}
-		}
-		tmp := array[j]
-		array[j] = array[minIdx]
-		array[minIdx] = tmp
-	}
-	return array
-}
-
-func mergeSort(array []int) []int {
-	if len(array) == 1 || len(array) == 0 {
-		return array
-	}
-	middle := len(array) / 2
-	low := 0
-	high := len(array)
-	right := mergeSort(array[low:middle])
-	left := mergeSort(array[middle:high])
-	return merge(right, left)
-}
-
-func merge(a ...[]int) []int {
-	if len(a) != 2 {
-		return nil
-	}
-	right := a[0]
-	left := a[1]
-	var merged = make([]int, len(right)+len(left))
-	var r, l = 0, 0
-	for i := 0; i < len(right)+len(left); i++ {
-		if r >= len(right) {
-			merged[i] = left[l]
-			l++
-			continue
-		}
-		if l >= len(left) {
-			merged[i] = right[r]
-			r++
-			continue
-		}
-		if right[r] > left[l] {
-			merged[i] = left[l]
-			l++
-		} else {
-			merged[i] = right[r]
-			r++
-		}
-	}
-	return merged
-}
-
-func quick(a []int) []int {
-	if len(a) == 0 || len(a) == 1 {
-		return a
-	}
-	start, end := 0, len(a)-1
-	if start == end-1 {
-		if a[start] > a[end] {
-			swap(a, start, end)
-			return a
-		}
-	}
-	start, pivot, end := sort(a, start, end)
-	quick(a[start : pivot+1])
-	quick(a[pivot+1 : end+1])
-	return a
-}
-
-func sort(a []int, pivot, end int) (int, int, int) {
-	count := pivot + 1
-	for j := count; j <= end; j++ {
-		if a[j] < a[pivot] {
-			swap(a, count, j)
-			count++
-		}
-	}
-	start := pivot
-	pivot = count - 1
-	swap(a, start, pivot)
-	return start, pivot, end
-}
-
-func swap(a []int, i, j int) {
-	if i == j {
-		return
-	}
-	tmp := a[i]
-	a[i] = a[j]
-	a[j] = tmp
-}
 
 // Find ‘k’ smallest numbers from a million numbers
 // Solution 1 : Sort in O(nlogn)
@@ -182,7 +59,7 @@ func findPairsWithDiffK(slice []int, dist int) int {
 		return 0
 	}
 	var count int
-	sorted := quick(slice)
+	sorted := sort.Quick(slice)
 	size := len(sorted) - 1
 	index := -1
 	for i := size; i > 0; i-- {
@@ -553,7 +430,6 @@ func MedianOfTwoSortedArray(n int, lists ...[]int) int {
 	b := lists[1]
 	m1 := median(a, n)
 	m2 := median(b, n)
-	fmt.Println(m1, m2, a, b)
 	// Medians are equal, return either m1 or m2
 	if m1 == m2 {
 		return m1
@@ -589,3 +465,18 @@ func min(num ...int) int {
 	}
 	return num[1]
 }
+
+// Remove element
+// Given an array and a value, remove all instances of that value in place and return the new length.
+// The order of elements can be changed. It doesn't matter what you leave beyond the new length.
+// Input: 1，2，2，3，2，4
+// Output: 3
+
+// [LeetCode 1] Two Sum
+// Given an array of integers, find two numbers such that they add up to a specific target number.
+// The function twoSum should return indices of the two numbers such that they add up to the target,
+// where index1 must be less than index2. Please note that your returned answers (both index1 and index2) are not zero-based.
+// You may assume that each input would have exactly one solution.
+// Input : [2, 11, 15, 7] => 9
+// Output : index = 1, index = 2
+// Solution1 : O(n^2). For each value in the array, look the rest of the array and find the match
