@@ -55,7 +55,7 @@ func TestQuick(t *testing.T) {
 	Convey("Input should equal output", t, func() {
 		for _, v := range testCases {
 			input := v.input
-			So(quick(input), ShouldResemble, v.output)
+			So(Quick(input), ShouldResemble, v.output)
 		}
 	})
 }

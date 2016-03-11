@@ -3,12 +3,12 @@ package main
 
 import (
 	"fmt"
-	"math"
 	s "sort"
 	"strconv"
 	"strings"
 
 	sort "./sort"
+	util "./util"
 )
 
 // Find ‘k’ smallest numbers from a million numbers
@@ -74,20 +74,16 @@ func findPairsWithDiffK(slice []int, dist int) int {
 			if j != innerLen && inner[j] == inner[j+1] {
 				continue
 			}
-			if abs(inner[j]) < abs(ele)-dist {
+			if util.Abs(inner[j]) < util.Abs(ele)-dist {
 				break
 			}
-			if abs(abs(inner[j])-abs(ele)) == dist {
+			if util.Abs(util.Abs(inner[j])-util.Abs(ele)) == dist {
 				index = j
 				count++
 			}
 		}
 	}
 	return count
-}
-
-func abs(num int) int {
-	return int(math.Abs(float64(num)))
 }
 
 type Tree interface {
@@ -112,7 +108,7 @@ func (t *TreeImpl) Insert(idx int, n *Node) {
 		return
 	}
 	// Add depth when total num of nodes equals 2^(d+1) - 1
-	if t.count == pow(2, t.depth+1)-1 {
+	if t.count == util.Pow(2, t.depth+1)-1 {
 		t.depth++
 	}
 	t.count++
@@ -158,10 +154,6 @@ func constructPath(idx int, slice []int) {
 	}
 	constructPath(parent, slice)
 	return
-}
-
-func pow(b int, p int) int {
-	return int(math.Pow(float64(b), float64(p))) - 1
 }
 
 func (t *TreeImpl) Remove(n *Node) {
