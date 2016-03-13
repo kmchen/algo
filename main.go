@@ -472,3 +472,20 @@ func min(num ...int) int {
 // Input : [2, 11, 15, 7] => 9
 // Output : index = 1, index = 2
 // Solution1 : O(n^2). For each value in the array, look the rest of the array and find the match
+// Solution2 : Sorting is not an option coz we need to return result index. Use hashmap to store
+// abs(sum - num)
+func TwoSum(nums []int, sum int) []int {
+	hashMap := make(map[int]int)
+	indices := make([]int, 2)
+	for k, v := range nums {
+		diff := sum - v
+		if value, exist := hashMap[diff]; exist {
+			indices[0] = value
+			indices[1] = k
+			return indices
+		}
+		// Not in hashmap, store index to the map
+		hashMap[v] = k
+	}
+	return indices
+}

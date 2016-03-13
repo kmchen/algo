@@ -166,3 +166,21 @@ func TestMedianOfTwoSortedArray(t *testing.T) {
 		}
 	})
 }
+func TestTwoSum(t *testing.T) {
+	var testCases = []struct {
+		input  []int
+		sum    int
+		output []int
+	}{
+		{[]int{2, 11, 15, 7}, 9, []int{0, 3}},
+		{[]int{0, 9, 15, 7}, 9, []int{0, 1}},
+		{[]int{0, 9, 15, 7}, 9, []int{0, 1}},
+		{[]int{2, 11, -2, 7}, 9, []int{1, 2}}}
+	Convey("Input should equal output", t, func() {
+		for _, v := range testCases {
+			input := v.input
+			sum := v.sum
+			So(TwoSum(input, sum), ShouldResemble, v.output)
+		}
+	})
+}
