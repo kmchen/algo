@@ -9,3 +9,10 @@ func Pow(b int, p int) int {
 func Abs(num int) int {
 	return int(math.Abs(float64(num)))
 }
+
+func Max(a, b int) int {
+	if a >= b {
+		return a
+	}
+	return b
+}

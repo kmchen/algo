@@ -26,3 +26,33 @@ func TestLongestSubstring(t *testing.T) {
 		}
 	})
 }
+func TestLongestPalindromicSubstring(t *testing.T) {
+	// Input : BBABCBCAB, then the output should be 7 as “BABCBAB"
+	var testCases = []struct {
+		input  string
+		output int
+	}{
+		{
+			"BBABCBCAB",
+			7, //"BABCBAB"
+		},
+		{
+			"abac",
+			3,
+		},
+		{
+			"caba",
+			3,
+		},
+		{
+			"agbdba",
+			5,
+		},
+	}
+	Convey("Input should equal output", t, func() {
+		for _, v := range testCases {
+			input := v.input
+			So(LongestPalindromicSubstring(input), ShouldResemble, v.output)
+		}
+	})
+}
