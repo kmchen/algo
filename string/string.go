@@ -1,6 +1,9 @@
 package string
 
-import util "../util"
+import (
+	_ "../sort"
+	"../util"
+)
 
 // [LeetCode 3] Longest Substring Without Repeating Characters
 // Given a string, find the length of the longest substring without
@@ -73,4 +76,103 @@ func LongestPalindromicSubstring(str string) int {
 		}
 	}
 	return matrix[0][size-1]
+}
+
+// Reverse String in O(n)
+// Given a string reverse n first character
+// Input : abcdef, 3
+// output: defabc
+// Solution 1: Loop n times and append to the end of the string
+// Solution 2: // https://github.com/julycoding/The-Art-Of-Programming-By-July/blob/master/ebook/zh/01.01.md
+func ReverseString1(str string, num int) string {
+	var output string
+	size := len(str)
+	startIdx := size - num
+	for i := startIdx; i < size; i++ {
+		output += string(str[i])
+	}
+	for i := 0; i < num; i++ {
+		output += string(str[i])
+	}
+	return output
+}
+
+// Solution 2 : Reverse [0:num-1] then reverse [num-1, 0]
+func ReverseString2(str string, num int) string {
+	left := ReverseString(str[0:num])
+	right := ReverseString(str[num:])
+	reversed := right + left
+	diff := len(str) - num
+	left = ReverseString(reversed[0:diff])
+	right = ReverseString(reversed[diff:])
+	return left + right
+}
+
+func ReverseString(str string) string {
+	var output string
+	idx := len(str) - 1
+	for ; idx >= 0; idx-- {
+		output += string(str[idx])
+	}
+	return output
+}
+
+// Implement StringContain(a, b string)
+// Solution 1: Two for loops and look every single char of B in A in O(n*m)
+func StringContainSol1(a, b string) bool {
+	for _, v2 := range b {
+		result := false
+		for _, v1 := range a {
+			if v2 == v1 {
+				result = true
+				break
+			}
+		}
+		if !result {
+			return false
+		}
+	}
+	return true
+}
+
+// Solution 2: Sort both strings and repeat solution 1. Sorting takes O(nlgn)+O(mlgm)+O(n*m)
+//func StringContainSol2(a, b string) bool {
+//listA := strings.Split(a, "")
+//listB := strings.Split(b, "")
+//stringA := sort.Quick(listA)
+//stringB := sort.Quick(listB)
+//return StringContainSol1(strings.Join(stringA, ""), strings.Join(stringB, ""))
+//}
+
+// Solution 3: Use number theory. Prime numbers are multiplied for each character in string a, if the product can be divided by the prime number representation of characters in string B then string A contains string B
+func StringContainSol3(a, b string) bool {
+	primeNum := []int{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239}
+	prod := 1
+	for _, v := range a {
+		num := primeNum[v-'a']
+		prod *= num
+	}
+	for _, v := range b {
+		num := primeNum[v-'a']
+		if prod%num != 0 {
+			return false
+		}
+	}
+	return true
+}
+
+// Solution 4: Use bitmap. Each character is represented as a single bit, we AND with bit representation of string B, if the result is 0 then string A does not contain string B.
+func StringContainSol4(a, b string) bool {
+	hash := 0
+	for _, v := range a {
+		hash |= 1 << uint(v-'a')
+	}
+	for _, v := range b {
+		binaryRep := 1 << uint(v-'a')
+		if hash&binaryRep == 0 {
+			return false
+		}
+	}
+
+	return true
 }

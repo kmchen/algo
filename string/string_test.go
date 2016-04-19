@@ -56,3 +56,60 @@ func TestLongestPalindromicSubstring(t *testing.T) {
 		}
 	})
 }
+func TestReverseString(t *testing.T) {
+	var testCases = []struct {
+		input  string
+		n      int
+		output string
+	}{
+		{
+			"abcdef",
+			3,
+			"defabc",
+		},
+		{
+			"abcdef",
+			6,
+			"abcdef",
+		},
+		{
+			"abcdef",
+			0,
+			"abcdef",
+		},
+	}
+	Convey("Input should equal output", t, func() {
+		for _, v := range testCases {
+			input := v.input
+			So(ReverseString2(input, v.n), ShouldResemble, v.output)
+		}
+	})
+}
+func TestStringContain(t *testing.T) {
+	var testCases = []struct {
+		input1 string
+		input2 string
+		output bool
+	}{
+		{
+			"abcdef",
+			"bad",
+			true,
+		},
+		{
+			"abcd",
+			"bce",
+			false,
+		},
+	}
+	Convey("Input should equal output", t, func() {
+		for _, v := range testCases {
+			input1 := v.input1
+			input2 := v.input2
+			So(StringContainSol1(input1, input2), ShouldResemble, v.output)
+			So(StringContainSol3(input1, input2), ShouldResemble, v.output)
+			So(StringContainSol4(input1, input2), ShouldResemble, v.output)
+			//So(StringContain(input1, input2), ShouldResemble, v.output)
+		}
+	})
+}
