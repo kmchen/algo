@@ -176,3 +176,60 @@ func StringContainSol4(a, b string) bool {
 
 	return true
 }
+
+// Implemnt atoi. Convert an integer in string to integer.
+// Solution: Convert char by char and multiply by 10 for each subsequent character.
+// Trick: Need to handle overflow. When given an extremely large number in string, the resulting integer might be overflowed. Need to handle +/- sign.
+func Atoi(str string) int {
+	// Validate +/- sign
+	// Validate empty string
+	if str == "" {
+		return 0
+	}
+	// Assumption: int32
+	MAX_INT := 1<<31 - 1
+	S_MAX_INT := ^MAX_INT
+	num := 0
+	max := MAX_INT / 10
+	unsigned := true
+	if string(str[0]) == "-" {
+		max = S_MAX_INT / 10
+		unsigned = false
+		str = str[1:]
+	}
+	for _, v := range str {
+		// Validate non-integer
+		if notDigit(v) {
+			return 0
+		}
+		digit := runeToDigit(v)
+		if unsigned {
+			if num > max ||
+				// When num = MAX_INT/10
+				(num == max && MAX_INT%10 <= digit) {
+				return MAX_INT
+			}
+			num = num*10 + digit
+		} else {
+			// When num < S_MAX_INT/10
+			if num < max ||
+				// When num = S_MAX_INT/10
+				(num == max && -1*S_MAX_INT%10 <= digit) {
+				return S_MAX_INT
+			}
+			num = num*10 - digit
+		}
+	}
+	return num
+}
+
+func runeToDigit(num rune) int {
+	return int(num - rune('0'))
+}
+
+func notDigit(num rune) bool {
+	if num >= rune('0') && num <= rune('9') {
+		return false
+	}
+	return true
+}

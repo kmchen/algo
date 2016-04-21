@@ -113,3 +113,56 @@ func TestStringContain(t *testing.T) {
 		}
 	})
 }
+func TestAtoi(t *testing.T) {
+	var testCases = []struct {
+		input  string
+		output int
+	}{
+		{
+			"2147483647",
+			2147483647,
+		},
+		{
+			"2147483648",
+			2147483647,
+		},
+		{
+			"2147483648000",
+			2147483647,
+		},
+		{
+			"2147483646",
+			2147483646,
+		},
+		{
+			"2147483",
+			2147483,
+		},
+		{
+			"-2147483648",
+			-2147483648,
+		},
+		{
+			"-2147483647",
+			-2147483647,
+		},
+		{
+			"-2147483649",
+			-2147483648,
+		},
+		{
+			"-214748364900000",
+			-2147483648,
+		},
+		{
+			"-2147483",
+			-2147483,
+		},
+	}
+	Convey("Input should equal output", t, func() {
+		for _, v := range testCases {
+			input := v.input
+			So(Atoi(input), ShouldResemble, v.output)
+		}
+	})
+}
