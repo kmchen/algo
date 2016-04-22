@@ -233,3 +233,31 @@ func notDigit(num rune) bool {
 	}
 	return true
 }
+
+// Solve palindrome, word spelles the same from backward. E.g. madam
+// Solution1: Start from both end and check each char
+// Solution2: Start from center towards both end
+func palindrome(str string) bool {
+	rightPtr := len(str) - 1
+	leftPtr := 0
+	space := rune(' ')
+	for rightPtr < len(str)/2 {
+		right := rune(str[rightPtr])
+		left := rune(str[leftPtr])
+		// Handle white space
+		if right == space {
+			rightPtr++
+			continue
+		}
+		if left == space {
+			leftPtr--
+			continue
+		}
+		if right != left {
+			return false
+		}
+		leftPtr--
+		rightPtr++
+	}
+	return true
+}

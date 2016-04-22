@@ -109,7 +109,6 @@ func TestStringContain(t *testing.T) {
 			So(StringContainSol1(input1, input2), ShouldResemble, v.output)
 			So(StringContainSol3(input1, input2), ShouldResemble, v.output)
 			So(StringContainSol4(input1, input2), ShouldResemble, v.output)
-			//So(StringContain(input1, input2), ShouldResemble, v.output)
 		}
 	})
 }
@@ -163,6 +162,48 @@ func TestAtoi(t *testing.T) {
 		for _, v := range testCases {
 			input := v.input
 			So(Atoi(input), ShouldResemble, v.output)
+		}
+	})
+}
+
+func TestPalindrome(t *testing.T) {
+	var testCases = []struct {
+		input  string
+		output bool
+	}{
+		{
+			"A man, a plan, a canal, Panama!",
+			true,
+		},
+		{
+			"Amor, Roma",
+			true,
+		},
+		{
+			"race car",
+			true,
+		},
+		{
+			"stack cats",
+			true,
+		},
+		{
+			"step on no pets",
+			true,
+		},
+		{
+			"taco cat",
+			true,
+		},
+		{
+			"put it up",
+			true,
+		},
+	}
+	Convey("Input should equal output", t, func() {
+		for _, v := range testCases {
+			input := v.input
+			So(palindrome(input), ShouldResemble, v.output)
 		}
 	})
 }
