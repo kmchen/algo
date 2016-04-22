@@ -203,7 +203,8 @@ func TestPalindrome(t *testing.T) {
 	Convey("Input should equal output", t, func() {
 		for _, v := range testCases {
 			input := v.input
-			So(palindrome(input), ShouldResemble, v.output)
+			So(palindromeSol1(input), ShouldResemble, v.output)
+			So(palindromeSol2(input), ShouldResemble, v.output)
 		}
 	})
 }
