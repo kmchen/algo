@@ -299,3 +299,58 @@ func palindromeSol2(str string) bool {
 	}
 	return true
 }
+
+// TODO : Palindrome of link list
+//分析：对于单链表结构，可以用两个指针从两端或者中间遍历并判断对应字符是否相等。但这里的关键就是如何朝两个方向遍历。由于单链表是单向的，所以要向两个方向遍历的话，可以采取经典的快慢指针的方法，即先位到链表的中间位置，再将链表的后半逆置，最后用两个指针同时从链表头部和中间开始同时遍历并比较即可。
+// http://blog.csdn.net/u010305706/article/details/50810884
+
+// Permutation
+// Solution1: Fix one char at a time and swap each character and recursively print out all possible strings
+// Solution2: Use next_permutation. Find
+// https://github.com/julycoding/The-Art-Of-Programming-By-July/blob/master/ebook/zh/01.06.md
+func LongestPermutation(str string) []string {
+	return Permutation(str, 0)
+}
+
+func Permutation(str string, i int) []string {
+	size := len(str)
+	result := []string{}
+	if i == size-1 {
+		return []string{str}
+	}
+	for j := i + 1; j < size; j++ {
+		result = append(result, Permutation(str, j)...)
+		str = swap(str, i, j)
+		result = append(result, Permutation(str, j)...)
+		str = swap(str, j, i)
+	}
+	return result
+}
+
+func swap(str string, i, j int) string {
+	if i == j || i < 0 || i > len(str)-1 {
+		return str
+	}
+	var newStr string
+	c := make(chan rune, 0)
+	go func() {
+		for k, v := range str {
+			switch k {
+			case i:
+				c <- rune(str[j])
+			case j:
+				c <- rune(str[i])
+			default:
+				c <- v
+			}
+		}
+	}()
+	for _, _ = range str {
+		newStr += string(<-c)
+	}
+	return newStr
+}
+
+// Postfix Expression Evaluation
+// Input: 5 1 2 + 4 * + 3 -
+// Output: 14
