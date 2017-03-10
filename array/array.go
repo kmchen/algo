@@ -1,7 +1,5 @@
 package array
 
-import sort "../sort"
-
 // Find pair with given sum in the array
 // Given an unsorted array of integers, find a pair with given sum in it
 // Input: [8, 7, 2, 5, 3, 1], sum = 10
@@ -11,25 +9,34 @@ import sort "../sort"
 // Increment low when the sum>newSum and decrement high when newSum<sum. Stop when low > high
 // O(n): Hashing
 func FindPairWithGivenSum(input []int, sum int) []int {
-	// O(nlogn) solution
-	idxMap := map[int]int{}
-	for key, val := range input {
-		idxMap[val] = key
-	}
-	sortedInput := sort.Quick(input)
-	low, high := 0, len(input)-1
 	result := make([]int, 0)
-	for low <= high {
-		newSum := sortedInput[low] + sortedInput[high]
-		if newSum == sum {
-			result = append(result, idxMap[sortedInput[low]], idxMap[sortedInput[high]])
-		}
-		if newSum > sum {
-			high--
-		} else {
-			low++
-		}
-	}
+	// O(nlogn) solution
+	//idxMap := map[int]int{}
+	//for key, val := range input {
+	//idxMap[val] = key
+	//}
+	//sortedInput := sort.Quick(input)
+	//low, high := 0, len(input)-1
+	//for low <= high {
+	//newSum := sortedInput[low] + sortedInput[high]
+	//if newSum == sum {
+	//result = append(result, idxMap[sortedInput[low]], idxMap[sortedInput[high]])
+	//}
+	//if newSum > sum {
+	//high--
+	//} else {
+	//low++
+	//}
+	//}
+
 	// O(n) hashing
+	hash := make(map[int]int)
+	for key, val := range input {
+		diff := sum - val
+		if idx, ok := hash[diff]; ok {
+			result = append(result, key, idx)
+		}
+		hash[val] = key
+	}
 	return result
 }
