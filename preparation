@@ -1,0 +1,4 @@
+Find duplicates in an array:
+1. Hashing (require constant space)
+2. Mark the element in the index as negative  (Constant space)
+3. XOR due to a^a = 0, 0^0 = 0 and a^0 = a in O(n)
